@@ -1,0 +1,53 @@
+1)
+Match(a:Actor)-[:ACTS_IN]->()
+Where (a)-[:DIRECTED]->()
+Set a:ACTORDIRECTOR
+
+
+
+2)   
+
+Match(a:Actor)-[:ACTS_IN]->()
+Where (a)-[:DIRECTED]->()
+RETURN count(a) AS ADCount
+
+3)
+
+    Match(a:Actor)-[:ACTS_IN]->(m:Movie)
+     Where a.name ="Kevin Bacon"
+      RETURN m.title as Titles
+
+
+4) 
+
+MATCH (a:Actor)-[:ACTS_IN]-> (m:Movie) 
+Where a.name="Kevin Bacon"
+ Match(m)<- [:ACTS_IN]-(oa:Actor)
+Where oa.name<> "Kevin Bacon"
+Return count(distinct oa) as NoOfOtherActors
+
+
+5)
+
+MATCH (a:Actor)-[:ACTS_IN]->(m:Movie)<-[:ACTS_IN*1..5]-(oa:Actor)
+WHERE a.name = "Kevin Bacon"
+RETURN oa.name AS CoActors LIMIT 100;
+
+
+6)
+
+MATCH (a:Actor)-[:ACTS_IN]->(m:Movie)
+WITH a,count(m) AS CountMovies
+WHERE CountMovies >= 40
+RETURN a.name AS ActorNames;
+
+
+7)
+
+MATCH (a:ACTOR)-[:ACTS_IN]->(m:Movie)
+Where a.name="Brock Lesnar"
+WITH a,collect(m.title) as MovieTitles
+
+MATCH (oa)-[:ACTS_IN]->()
+WHERE ALL (b IN MovieTitles WHERE (oa)-[:ACTS_IN]->())
+RETURN Distinct oa.name AS CoActor LIMIT 200;

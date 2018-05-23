@@ -1,0 +1,1 @@
+select lname:f.Name.Lname from f in FACULTY where f.Works_in.Dname='Computer Science' 

@@ -1,0 +1,1 @@
+select SSN:s.Ssn from s in GRAD_STUDENT where s.advisor.Works_in.Dname='Computer Science'
